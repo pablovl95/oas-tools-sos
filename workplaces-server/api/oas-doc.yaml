@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: WorkPlace API
+  description: API for workplaces in Andalucia 
+
+paths:
+  /api/v1/workplace_stats:
+    x-router-controllert: workplacesController
+    get:
+      description: Returns all workplace_stats
+      operationId: getWorkplace_stats
+      responses:
+        200:
+          description: Workplace_stat list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/workplace_stat'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v1/workplace_stats/{year}:
+    x-router-controllert: workplacesController
+    get:
+      description: Returns a single workplace_stat by its year
+      operationId: findByyear
+      parameters:
+        - required: true
+          name: year
+          description: year of the workplace_stat to fetch
+          in: path
+          schema:
+            type: number
+      responses:
+        200:
+          description: Workplace_stat found by year
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workplace_stat'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+components:
+  schemas:
+    workplace_stat:
+        type: object
+        required:
+          - year
+        properties:
+          province:
+            type: string
+          year:
+            type: number
+          work_place:
+            type: number
+          percentage_structure:
+            type: number
+          variation_rate:
+            type: number
+    error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+      additionalProperties: true
